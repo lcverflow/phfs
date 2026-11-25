@@ -43,11 +43,12 @@ int attach (struct target *t, const char *path,
 	if (!t->copy)
 		return -ENOMEM;
 
-	if (t->copy->proc_write) {
-		kfree(t->copy);
-		t->copy = NULL;
-		return -EEXIST;
-	}
+	if (t->copy->proc_write)
+		{
+			kfree(t->copy);
+			t->copy = NULL;
+			return -EEXIST;
+		}
 
 	t->copy->proc_write = chanW;
 
@@ -78,17 +79,19 @@ static int __init phfs_init (void)
 	int ret;
 
 	ret = probe_offsets();
-	if (ret) {
-		pr_err("offset probe failed (%d)\n", ret);
-		return ret;
-	}
+	if (ret)
+		{
+			pr_err("offset probe failed (%d)\n", ret);
+			return ret;
+		}
 	selfcheck();
 
 	ret = attach(&tgt, target, SEQ_EXPECTED);
-	if (ret) {
-		pr_err("attach in %s failed (%d)\n", target, ret);
-		return ret;
-	}
+	if (ret)
+		{
+			pr_err("attach in %s failed (%d)\n", target, ret);
+			return ret;
+		}
 
 	pr_info("C: %s | delta_pde=%ld off_ops=%zu\n",
 		target, delta_pde, off_ops);
