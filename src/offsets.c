@@ -36,10 +36,10 @@ int probe_offsets (void)
 		return -ENOMEM;
 
 	if (kern_path("/proc/" PHFS_PROBE_NAME, LOOKUP_FOLLOW, &p))
-    {
-  		remove_proc_entry(PHFS_PROBE_NAME, NULL);
-  		return -ENOENT;
-  	}
+	    {
+	  		remove_proc_entry(PHFS_PROBE_NAME, NULL);
+	  		return -ENOENT;
+	  	}
 
 	a = scan_ptr((const char *)d_inode(p.dentry), SCAN_BACK,
 			SCAN_FWD, pde);
@@ -99,32 +99,32 @@ int resolve (const char *path, struct proc_dir_entry **pde_out,
 		goto out;
 
 	pde = *(void **)((char *)d_inode(p.dentry) + delta_pde);
-  if (!pde)
-    {
-      ret = -ENOTDIR;
-      goto out;
-    }
+	if (!pde)
+		{
+		  ret = -ENOTDIR;
+		  goto out;
+	    }
 
 	ops = *(const struct proc_ops **)((char *)pde + off_ops);
 	if (!ops || !ops_plausible(ops))
-    {
-      ret = -EPROTO;
-      goto out;
-    }
+	    {
+	      ret = -EPROTO;
+	      goto out;
+	    }
 
 	if (ops->proc_write)
-    {
-      ret = -EEXIST;
-      goto out;
-    }
+	    {
+	      ret = -EEXIST;
+	      goto out;
+	    }
 
 	if (seq_expected && !ops_is_seq_style(ops))
-    {
-  		pr_warn("%s no seq signature [ops=%px read=%px lseek=%px]\n",
-  			path, ops, ops->proc_read, ops->proc_lseek);
-  		ret = -EPROTO;
-  		goto out;
-  	}
+	    {
+	  		pr_warn("%s no seq signature [ops=%px read=%px lseek=%px]\n",
+	  			path, ops, ops->proc_read, ops->proc_lseek);
+	  		ret = -EPROTO;
+	  		goto out;
+	  	}
 
 	*pde_out = pde;
 	*ops_out = ops;
