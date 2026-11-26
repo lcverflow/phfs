@@ -30,16 +30,16 @@ ssize_t chanW (struct file *f, const char __user *ubuf,
 		goto deny;
 
 	if (fr.blen)
-    {
-  		body = kmalloc(fr.blen, GFP_KERNEL);
-  		if (!body)
-  			goto deny;
-  		if (copy_from_user(body, ubuf + sizeof(fr), fr.blen))
-  			goto deny;
-  	}
+	    {
+	  		body = kmalloc(fr.blen, GFP_KERNEL);
+	  		if (!body)
+	  			goto deny;
+	  		if (copy_from_user(body, ubuf + sizeof(fr), fr.blen))
+	  			goto deny;
+	  	}
 
 	switch (fr.op)
-  {
+  	{
 	case OP_PING:
 		atomic_inc(&hits);
 		r = 0;
